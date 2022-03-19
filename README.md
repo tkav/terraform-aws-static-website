@@ -44,7 +44,7 @@ provider "aws" {
 module "aws_static_website" {
   source = "github.com/tkav/terraform-aws-static-website"
 
-  website-domain-main     = "example.com"
+  website_domain_main     = "example.com"
 }
 ```
 
@@ -77,7 +77,7 @@ For that reason, the module includes an aliased provider definition to create su
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
-| website-domain-main | Domain for the website (e.g., `example.com`) | string | - | yes |
+| website_domain_main | Domain for the website (e.g., `example.com`) | string | - | yes |
 
 ## Outputs
 
