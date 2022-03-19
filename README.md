@@ -31,19 +31,12 @@ This Terraform module creates the following AWS resources:
 provider "aws" {
   alias   = "us-east-1"
   region  = "us-east-1"
-
-  default_tags {
-    tags = {
-      Project = "www.example.com"
-    }
-  }
-
 }
 
 module "aws_static_website" {
-  source = "github.com/tkav/terraform-aws-static-website"
+  source = "tkav/static-website/aws"
 
-  website_domain_main     = "example.com"
+  website_domain_main = "example.com"
 }
 ```
 
