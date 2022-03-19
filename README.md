@@ -23,7 +23,7 @@ This Terraform module creates the following AWS resources:
 
 * This module has been tested with [Terraform](https://www.terraform.io/downloads.html) 1.0.0.
 * An AWS account and your credentials (`aws_access_key_id` and `aws_secret_access_key`) configured. There are several ways to do this (environment variables, shared credentials file, etc.). More information in the [AWS Provider](https://www.terraform.io/docs/providers/aws/index.html) documentation.
-* Your domain ready to use on an external service such as (namecheap.com)[https://namecheap.com].
+* Your domain ready to use on an external service such as [namecheap.com](https://namecheap.com).
 
 ## Usage
 
