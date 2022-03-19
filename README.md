@@ -1,8 +1,12 @@
 # AWS Static Website Terraform Module
 
-![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg) [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
+![Terraform Version](https://img.shields.io/badge/tf-%3E%3D1.0.0-blue.svg) [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
-Terraform module which provision required AWS resources to host a performant and secured static website.
+Based on the [cloudmaniac/terraform-aws-static-website](https://github.com/cloudmaniac/terraform-aws-static-website) module, this is a Terraform Module to provision an AWS static website using S3 and CloudFront, without using Route53.
+
+The redirect bucket (`www.example.com` redirected to `example.com`) has also been removed as this can be done using a URL Redirect at the domain.
+
+Reources have been updated to suit updated Terraform and AWS provider versions.
 
 ## Features
 
@@ -12,34 +16,56 @@ This Terraform module creates the following AWS resources:
 * **S3**
   * Bucket #1: to store logs.
   * Bucket #2: to store the content (`example.com`).
-  * Bucket #3: to redirect a different subdomain to the main domain (e.g., `www.example.com` redirected to `example.com`).
 * **CloudFront**
   * Distribution #1: to frontend the website.
-  * Distribution #2: to frontend the subdomain that will be redirected to the main domain.
-* **Route53** record sets pointing to the two CloudFront distributions.
 
 ## Requirements
 
-* This module is meant for use with [Terraform](https://www.terraform.io/downloads.html) 0.12+. It has not been tested with previous versions of Terraform.
-* An AWS account and your credentials (`aws_access_key_id` and `aws_secret_access_key`) configured. There are several ways to do this (environment variables, shared credentials file, etc.): my preference is to store them in a [credential file](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html). More information in the [AWS Provider](https://www.terraform.io/docs/providers/aws/index.html) documentation.
-* Your domain already configured as a hosted zone on Route53.
+* This module has been tested with [Terraform](https://www.terraform.io/downloads.html) 1.0.0.
+* An AWS account and your credentials (`aws_access_key_id` and `aws_secret_access_key`) configured. There are several ways to do this (environment variables, shared credentials file, etc.). More information in the [AWS Provider](https://www.terraform.io/docs/providers/aws/index.html) documentation.
+* Your domain ready to use on an external service such as (namecheap.com)[https://namecheap.com].
 
 ## Usage
 
 ```HCL
 provider "aws" {
-  version                 = "~> 2.0"
-  region                  = "eu-west-3"
-  shared_credentials_file = "~/.aws/credentials"
+  version = "~> 4.6.0"
+  alias   = "us-east-1"
+  region  = "us-east-1"
+
+  default_tags {
+    tags = {
+      Project = "www.example.com"
+    }
+  }
+
 }
 
 module "aws_static_website" {
-  source = "cloudmaniac/static-website/aws"
+  source = "github.com/tkav/terraform-aws-static-website"
 
   website-domain-main     = "example.com"
-  website-domain-redirect = "www.example.com"
 }
 ```
+
+**IMPORTANT**
+This module uses EMAIL verification for the CloudFront distribution certificate.
+During deployment you will recieve an email to verify the certificate.
+Open the email and approve the validation request. 
+
+When completed, something like the following will be outputted:
+
+```
+Outputs:
+
+cloudfront_domain = "dlimer79nfhej.cloudfront.net"
+```
+
+Add an `@` CNAME record to your domain using the `cloudfront_domain` above and add a `www` URL Redirect record pointing to your domain:
+
+![DNS Records](docs/images/dns-records.png)
+
+Once complete, your site will soon be available using your domain.
 
 Although AWS services are available in many locations, some of them require the `us-east-1` (N. Virginia) region to be configured:
 
@@ -52,24 +78,15 @@ For that reason, the module includes an aliased provider definition to create su
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
 | website-domain-main | Domain for the website (e.g., `example.com`) | string | - | yes |
-| website-domain-redirect | Alternate subdomain to redirect to the main website (e.g., `www.example.com`) | string | - | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| website_cdn_root_id | CloudFront Distribution ID |
+| cloudfront_domain | CloudFront Distribution Domain |
 
-## Author
+## Authors
 
-Module written by [@cloudmaniac](https://github.com/cloudmaniac). Module Support: [terraform-aws-static-website](https://github.com/cloudmaniac/terraform-aws-static-website). Contributions and comments are welcomed.
+Initial Module written by [@cloudmaniac](https://github.com/cloudmaniac). Modified by [@tkav](https://github.com/tkav) to remove Route53 and allow use with external domain services.
 
-## Additional Resources
-
-* Blog post describing the thought process behind this: [My Wordpress to Hugo Migration #2 - Hosting](https://cloudmaniac.net/wordpress-to-hugo-migration-2-hosting/)
-
-## Todo
-
-* Tag all ressources
-* Secure S3 buckets
-* Optional enhanced version with Lambda@Edge configuration and S3 endpoint (REST endpoint) used as the origin
+Contributions and comments are welcomed.
