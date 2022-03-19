@@ -57,7 +57,7 @@ cloudfront_domain = "dlimer79nfhej.cloudfront.net"
 
 Add an `@` CNAME record to your domain using the `cloudfront_domain` above and add a `www` URL Redirect record pointing to your domain:
 
-![DNS Records](docs/images/dns-records.png)
+![DNS Records](https://i.imgur.com/ZmT3w2l.png)
 
 Once complete, your site will soon be available using your domain.
 
