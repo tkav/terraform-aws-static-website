@@ -2,7 +2,7 @@
 
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D1.0.0-blue.svg) [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
-Based on the [cloudmaniac/terraform-aws-static-website](https://github.com/cloudmaniac/terraform-aws-static-website) module, this is a Terraform Module to provision an AWS static website using S3 and CloudFront, without using Route53.
+Based on the [cloudmaniac/terraform-aws-static-website](https://github.com/cloudmaniac/terraform-aws-static-website) module, this is a Terraform Module to provision an AWS static website using S3 and CloudFront, without using Route53, allowing you to use a domain with an external provider.
 
 The redirect bucket (`www.example.com` redirected to `example.com`) has also been removed as this can be done using a URL Redirect at the domain.
 
@@ -26,6 +26,8 @@ This Terraform module creates the following AWS resources:
 * Your domain ready to use on an external service such as [namecheap.com](https://namecheap.com).
 
 ## Usage
+
+You can use this github repository template, [tkav/cloudfront-static-site](https://github.com/tkav/cloudfront-static-site) (which uses this module) to create a new repo for a new site deployment or manually use this module using the following:
 
 ```HCL
 provider "aws" {
