@@ -29,7 +29,6 @@ This Terraform module creates the following AWS resources:
 
 ```HCL
 provider "aws" {
-  version = "~> 4.6.0"
   alias   = "us-east-1"
   region  = "us-east-1"
 
