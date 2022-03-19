@@ -1,16 +1,4 @@
 variable "website-domain-main" {
-  description = "Main website domain, e.g. cloudmaniac.net"
+  description = "Main website domain, e.g. example.com"
   type        = string
-}
-
-variable "website-domain-redirect" {
-  description = "Secondary FQDN that will redirect to the main URL, e.g. www.cloudmaniac.net"
-  default     = null
-  type        = string
-}
-
-variable "tags" {
-  description = "Tags added to resources"
-  default     = {}
-  type        = map(string)
 }
